@@ -1,16 +1,11 @@
 import type { NextPage } from 'next'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
-import { getSortedPostsData } from '../lib/travelLogs'
-
-type Logs = {
-    id: number
-    date: string
-    title: string
-}
+import { getSortedTravelData } from '../lib/travels'
+import { Logs } from '../types/Logs'
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const allLogsData = getSortedPostsData()
+    const allLogsData = await getSortedTravelData()
     return {
         props: {
             allLogsData,
@@ -33,8 +28,6 @@ const Home: NextPage = ({ allLogsData }: InferGetStaticPropsType<typeof getStati
                         {allLogsData.map(({ id, date, title }: Logs) => (
                             <li key={id}>
                                 {title}
-                                <br />
-                                {id}
                                 <br />
                                 {date}
                             </li>
