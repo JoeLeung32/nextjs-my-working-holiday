@@ -1,5 +1,6 @@
 ---
-title: 'Two Forms of Pre-rendering'
+slug: 'two-forms-of-pre-rendering-in-folder-1'
+title: 'Two Forms of Pre-rendering in Folder-1'
 date: '2020-01-03'
 ---
 

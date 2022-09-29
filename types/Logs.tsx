@@ -1,5 +1,9 @@
 export type Logs = {
     id: string
-    date?: string
-    title?: string
+    slug: string
+    title: string
+    date: string
+    mdPath: string
 }
+
+export const LogDirectoryPath = 'markdowns'

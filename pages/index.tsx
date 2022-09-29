@@ -1,19 +1,8 @@
 import type { NextPage } from 'next'
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
-import { getSortedTravelData } from '../lib/travels'
-import { Logs } from '../types/Logs'
+import Link from 'next/link'
 
-export const getStaticProps: GetStaticProps = async (context) => {
-    const allLogsData = await getSortedTravelData()
-    return {
-        props: {
-            allLogsData,
-        },
-    }
-}
-
-const Home: NextPage = ({ allLogsData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home: NextPage = () => {
     return (
         <>
             <Head>
@@ -22,21 +11,20 @@ const Home: NextPage = ({ allLogsData }: InferGetStaticPropsType<typeof getStati
                 <link rel='icon' href='/favicon.ico' />
             </Head>
             <h1>Home</h1>
-            {allLogsData.length ? (
-                <div>
-                    <ul>
-                        {allLogsData.map(({ id, date, title }: Logs) => (
-                            <li key={id}>
-                                {title}
-                                <br />
-                                {date}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ) : (
-                <div>No Date</div>
-            )}
+            <div>
+                <ul>
+                    <li>
+                        <Link href={`/about`}>
+                            <a>About</a>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href={`/blog`}>
+                            <a>Blog</a>
+                        </Link>
+                    </li>
+                </ul>
+            </div>
         </>
     )
 }

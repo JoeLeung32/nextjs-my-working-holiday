@@ -1,21 +1,26 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { Logs } from '../types/Logs'
+import { Logs, LogDirectoryPath } from '../types/Logs'
 
-const logDirectory = path.join(process.cwd(), 'markdowns/travel')
+const logDirectory = path.join(process.cwd(), LogDirectoryPath)
 
-export const getSortedTravelData = async () => {
+export const getSortedBlogArticles = async () => {
     let allLogsData: Logs[] = []
     const readFile = async (filename: string, filepath: string) => {
         const basename = filename.replace(/\.md$/, '')
         const fullPath = path.join(filepath, filename)
         const fileContents = fs.readFileSync(fullPath, 'utf8')
+        const fileState = fs.statSync(fullPath)
         const matterResult = matter(fileContents)
-        return {
-            id: `${basename}-${new Date().getTime()}`,
-            ...matterResult.data,
+        const dataObject: Logs = {
+            id: `${basename}-${fileState.mtimeMs}`,
+            slug: matterResult.data.slug || '',
+            title: matterResult.data.title || '',
+            date: matterResult.data.date || '1970-01-01',
+            mdPath: fullPath.replace(logDirectory, ''),
         }
+        return dataObject
     }
     const readDir = async (dirname: string) => {
         let fileDataList: Logs[] = []
@@ -31,7 +36,10 @@ export const getSortedTravelData = async () => {
                     case fs.lstatSync(filepath).isFile():
                     default: {
                         const fileData = await readFile(filename, dirname)
-                        fileDataList = [...fileDataList, fileData]
+                        fileDataList = [
+                            ...fileDataList,
+                            fileData,
+                        ]
                         break
                     }
                 }
