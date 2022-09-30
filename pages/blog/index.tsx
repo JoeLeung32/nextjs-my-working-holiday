@@ -1,10 +1,9 @@
 import type { NextPage } from 'next'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import Head from 'next/head'
 import { getSortedBlogArticles } from '../../lib/blog-articles'
 import { Logs } from '../../types/Logs'
 import Link from 'next/link'
-import SearchInput from '../../components/searchInput'
+import BlogLayout from '../../components/blogLayout'
 
 export const getStaticProps: GetStaticProps = async (context) => {
     const allLogsData = await getSortedBlogArticles()
@@ -17,14 +16,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 const Blog: NextPage = ({ allLogsData }: InferGetStaticPropsType<typeof getStaticProps>) => {
     return (
-        <div>
-            <Head>
-                <title>Blog - MyWH</title>
-            </Head>
-            <h1>Blog</h1>
-            <hr />
-            <SearchInput />
-            <hr />
+        <BlogLayout>
             {allLogsData.length ? (
                 <div>
                     <ul>
@@ -43,7 +35,7 @@ const Blog: NextPage = ({ allLogsData }: InferGetStaticPropsType<typeof getStati
             ) : (
                 <div>No Data</div>
             )}
-        </div>
+        </BlogLayout>
     )
 }
 

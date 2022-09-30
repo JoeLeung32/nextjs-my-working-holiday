@@ -1,12 +1,12 @@
 import type { NextPage } from 'next'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
-import Head from 'next/head'
 import search from '../../search.json'
 import path from 'path'
 import { LogDirectoryPath } from '../../types/Logs'
 import fs from 'fs'
 import matter from 'gray-matter'
 import { marked } from 'marked'
+import BlogLayout from '../../components/blogLayout'
 
 type Props = {
     params?: {
@@ -48,15 +48,12 @@ export const getStaticProps: GetStaticProps = async ({ params: { slug } }: Props
 
 const Blog: NextPage = ({ slug, frontmatter, content }: InferGetStaticPropsType<typeof getStaticProps>) => {
     return (
-        <div>
-            <Head>
-                <title>{`${frontmatter.title} - Blog - MyWH`}</title>
-            </Head>
+        <BlogLayout title={`${frontmatter.title} - `}>
             <h1>{frontmatter.title}</h1>
             <div><small>{frontmatter.date}</small></div>
             <article dangerouslySetInnerHTML={{ __html: marked.parse(content) }}>
             </article>
-        </div>
+        </BlogLayout>
     )
 }
 
